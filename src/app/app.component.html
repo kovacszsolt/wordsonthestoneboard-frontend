@@ -1,0 +1,51 @@
+<div *ngIf="isLoading;else content" class="onload">
+    <span class="fa fa-sync fa-spin"></span>
+    <h1>{{databaseType}}</h1>
+    <h3>{{currentPos}}</h3>
+</div>
+<ng-template #content>
+    <header>
+        <h1>
+            Words on the Stone Board ({{databaseType}} - <span *ngIf="!offline">Local Database offline</span><span *ngIf="offline">Local Database Ready</span>)
+            <button *ngIf="!offline" color="primary" (click)="createStorage()">
+                <span *ngIf="!isDataImportToDatabase" class="fa fa-cloud-download-alt"></span>
+                <span *ngIf="isDataImportToDatabase" class="fa fa-sync fa-spin"></span>
+            </button>
+        </h1>
+        <h2 *ngIf="currentPos!==''">{{currentPos}}</h2>
+        <p *ngIf="fullLength!==0">Database size: {{fullLength}} paragraph</p>
+        <form class="search" (submit)="search()">
+            <input type="text" placeholder="Type here something" [ngModelOptions]="{standalone: true}"
+                   [(ngModel)]="searchText">
+            <button type="submit">
+                <span class="fa fa-search"></span>
+            </button>
+        </form>
+    </header>
+    <div class="list">
+        <div *ngIf="isSearching;else searchContent" class="onload">
+            <span class="fa fa-sync fa-spin"></span>
+        </div>
+        <ng-template #searchContent>
+            <div *ngIf="resultList.length!==0" class="list-header">
+                <span>{{resultList.length}} pcs</span>
+                <span class="blinking" *ngIf="searchState!==''">{{searchState}}</span>
+                <div class="paginator">
+                    <button [disabled]="currentPage===1" class="fa fa-angle-double-left" (click)="pageGoto(1)"></button>
+                    <button [disabled]="currentPage===1" class="fa fa-angle-left"
+                            (click)="pageGoto(currentPage-1)"></button>
+                    <span>{{currentPage}} / {{maxPage}}</span>
+                    <button [disabled]="currentPage===maxPage" class="fa fa-angle-right"
+                            (click)="pageGoto(currentPage+1)"></button>
+                    <button [disabled]="currentPage===maxPage" class="fa fa-angle-double-right"
+                            (click)="pageGoto(maxPage)"></button>
+                </div>
+            </div>
+            <div class="content" *ngFor="let result of resultListShow">
+                <p class="religion">{{result.religion}}</p>
+                <p class="text" [innerHTML]="result.text | highlight : searchText"></p>
+            </div>
+        </ng-template>
+    </div>
+</ng-template>
+

@@ -1,0 +1,143 @@
+:host {
+
+}
+
+.onload {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .fa {
+    font-size: 5rem;
+  }
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-image: url("/assets/header2.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  align-items: center;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  text-align: center;
+
+  button {
+    background-color: transparent;
+    border: unset;
+
+    &:focus {
+      border: unset;
+      outline: none !important;
+      box-shadow: unset;
+    }
+
+    &:hover {
+      cursor: grab;
+    }
+
+    .fa {
+      font-size: 2rem;
+      color: #325C80;
+    }
+  }
+
+  h1 {
+    color: white;
+    font-size: 2rem;
+  }
+
+  .search {
+    display: flex;
+    flex-direction: row;
+
+
+    input[type="text"] {
+      width: 30rem;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: black;
+      border: 1px solid #EA5561;
+      padding: 0.5rem;
+      font-size: 1rem;
+      margin-right: 1rem;
+
+      &:focus {
+        border: 1px solid red !important;
+        outline: none !important;
+        box-shadow: unset;
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;;
+
+  span {
+    color: rgba(0, 0, 0, .5);
+    font-size: 1.2rem;
+  }
+
+  .paginator {
+    background-color: #F8F8F8;
+
+    button {
+      border: unset;
+      font-size: 1.2rem;
+      margin-right: 0.5rem;
+      background: transparent;
+
+      &.fa-angle-right {
+        margin-left: 0.5rem;
+      }
+
+      &:focus {
+        border: unset;
+        outline: none !important;
+        box-shadow: unset;
+      }
+    }
+  }
+}
+
+.list {
+  margin-top: 10px;
+  display: grid;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+
+  .content {
+    width: 1000px;
+    border: 1px solid lightgray;
+    background-color: white;
+
+    .religion {
+      margin-left: 20px;
+      font-weight: 700;
+    }
+
+    .text {
+      margin-left: 40px;
+      margin-right: 20px;
+    }
+  }
+
+  .blinking {
+    animation: blinker 1s linear infinite;
+  }
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
