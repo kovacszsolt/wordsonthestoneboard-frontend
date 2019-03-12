@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
     private searchObserver;
     private readonly PAGESIZE = 5;
 
-    public searchText = 'god is';
+    public searchText = '';
     public isLoading = true;
     public isSearching = false;
     public currentPage = 1;
