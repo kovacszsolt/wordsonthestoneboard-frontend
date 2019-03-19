@@ -3,7 +3,7 @@ cache:
     - build/
 stages:
   - build
-  - create
+  - release
   - deploy
 
 build:
@@ -13,9 +13,9 @@ build:
     - npm install
     - npm run build
 
-create:
+release:
   image: docker:latest
-  stage: build
+  stage: release
   services:
     - docker:dind
   variables:
