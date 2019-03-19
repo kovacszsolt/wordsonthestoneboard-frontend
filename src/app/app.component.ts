@@ -47,7 +47,6 @@ export class AppComponent implements OnInit {
         } else {
             this.databaseType = databaseTypeEnum.WebSQL;
         }
-        this.databaseType = databaseTypeEnum.IndexedDB;
         if (this.databaseType === databaseTypeEnum.IndexedDB) {
             this.initIndexedDB();
         } else {
