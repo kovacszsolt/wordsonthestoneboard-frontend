@@ -4,6 +4,7 @@ cache:
 stages:
   - build
   - create
+  - deploy
 
 build:
   image: node:latest
@@ -30,3 +31,13 @@ create:
     - docker push "${CI_REGISTRY_IMAGE}:latest"
   only:
     - master
+
+deploy:
+  image: alpine:latest
+  stage: deploy
+  script:
+    - apk add --update --no-cache openssh sshpass
+    - sshpass -V
+    - export SSHPASS=$DEPLOY_REMOTE_PASSWORD
+    - sshpass -e ssh -oStrictHostKeyChecking=no $DEPLOY_REMOTE_USERNAME@$DEPLOY_REMOTE_HOST '$DEPLOY_REMOTE_SCRIPT'
+
