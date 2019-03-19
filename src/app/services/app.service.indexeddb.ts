@@ -41,9 +41,9 @@ export class AppServiceIndexeddb {
     }
 
     public addMultiplePromise(records, db) {
-            const transaction = db.transaction('paragraph', 'readwrite');
-            const objectStore = transaction.objectStore('paragraph');
-            return Promise.all(records.map(record => this.add(objectStore, record)));
+        const transaction = db.transaction('paragraph', 'readwrite');
+        const objectStore = transaction.objectStore('paragraph');
+        return Promise.all(records.map(record => this.add(objectStore, record)));
     }
 
     public add(objectStore, record) {
@@ -83,4 +83,17 @@ export class AppServiceIndexeddb {
         });
     }
 
+    public searchTextGet(text, db): Observable<AppParagraphModel[]> {
+        return new Observable(observer => {
+            const transaction = db.transaction('paragraph', 'readonly');
+            const objectStore = transaction.objectStore('paragraph');
+            const request = objectStore.getAll();
+            request.onsuccess = (event) => {
+                if (event.type === 'success') {
+                    const records = event.target.result.filter(record => String(record.text).valueOf().includes(text)).map(record => new AppParagraphModel(record));
+                    observer.next(records);
+                }
+            };
+        });
+    }
 }

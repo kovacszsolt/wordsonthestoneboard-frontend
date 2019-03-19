@@ -26,6 +26,8 @@ export class AppComponent implements OnInit {
     public currentPos = '';
     public isDataImportToDatabase = false;
 
+    public searchTypeCursor = false;
+
     public get maxPage() {
         return Math.ceil(this.resultList.length / this.PAGESIZE);
     }
@@ -45,7 +47,7 @@ export class AppComponent implements OnInit {
         } else {
             this.databaseType = databaseTypeEnum.WebSQL;
         }
-
+        this.databaseType = databaseTypeEnum.IndexedDB;
         if (this.databaseType === databaseTypeEnum.IndexedDB) {
             this.initIndexedDB();
         } else {
@@ -80,6 +82,7 @@ export class AppComponent implements OnInit {
         this.offline = (rowCount !== 0);
         this.isLoading = false;
     }
+
     /**
      * initialization Block End
      */
@@ -112,13 +115,35 @@ export class AppComponent implements OnInit {
 
     private searchOffline() {
         if (this.databaseType === databaseTypeEnum.IndexedDB) {
-            this.searchIndexedDB();
+            if (this.searchTypeCursor) {
+                this.searchIndexedDBCursor();
+            } else {
+                this.searchIndexedDB();
+            }
+
         } else {
             this.searchWebSQL();
         }
     }
 
     private searchIndexedDB() {
+        const resultCountStart = (this.currentPage - 1) * this.PAGESIZE;
+        const resultCountEnd = this.currentPage * this.PAGESIZE;
+        if (this.searchObserver instanceof Subscriber) {
+            this.searchObserver.unsubscribe();
+        }
+        this.searchObserver = this.appServiceIndexeddb.searchTextGet(this.searchText, this.db).subscribe(
+            (resultList) => {
+                console.log(resultList);
+                this.resultList = resultList;
+                this.isSearching = false;
+                this.searchState = '';
+                this.pageGoto(1);
+            }
+        );
+    }
+
+    private searchIndexedDBCursor() {
         const resultCountStart = (this.currentPage - 1) * this.PAGESIZE;
         const resultCountEnd = this.currentPage * this.PAGESIZE;
         if (this.searchObserver instanceof Subscriber) {
@@ -156,6 +181,7 @@ export class AppComponent implements OnInit {
 
         });
     }
+
     /**
      * Search Block End
      */
@@ -200,6 +226,7 @@ export class AppComponent implements OnInit {
         this.offline = true;
         this.isDataImportToDatabase = false;
     }
+
     /**
      * Create Database Block End
      */

@@ -13,7 +13,8 @@
             </button>
         </h1>
         <h2 *ngIf="currentPos!==''">{{currentPos}}</h2>
-        <p *ngIf="fullLength!==0">Database size: {{fullLength}} paragraph</p>
+        <p *ngIf="fullLength!==0">Database size: {{fullLength}} paragraph </p>
+        <p><input type="checkbox" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchTypeCursor" /><span>Cursor Search</span></p>
         <form class="search" (submit)="search()">
             <input type="text" placeholder="Type here something" [ngModelOptions]="{standalone: true}"
                    [(ngModel)]="searchText">
